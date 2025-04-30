@@ -1,0 +1,32 @@
+{
+    "appId": "com.oleh-panasiuk.radio",
+    "productName": "RadioApp",
+    "directories": {
+        "output": "dist"
+    },
+    "files": [
+        "main.js",
+        "package.json",
+        {
+            "from": "./../backend/dist/",
+            "to": "backend/"
+        },
+        {
+            "from": "./../frontend/dist/",
+            "to": "frontend"
+        },
+        "util.js",
+        {
+            "from": ".env",
+            "to": "/backend/.env"
+        },
+        ".env"
+    ],
+    "win": {
+        "target": [
+            "portable"
+        ],
+        "icon": "logo.png"
+    },
+    "asar": true
+}
