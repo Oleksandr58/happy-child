@@ -1,0 +1,3 @@
+const START_CALCULATION_DATE = "02.05.2025";
+
+export default START_CALCULATION_DATE;
