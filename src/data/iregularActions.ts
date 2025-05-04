@@ -1,10 +1,5 @@
-const test = {
-  id: "washEyes",
-  types: ["щоранку"],
-  name: "Вмивання очей",
-  period: 1,
-};
+import { action } from '../types/action';
 
-const IREGULAR_ACTIONS = [test];
+const IREGULAR_ACTIONS: action[] = [];
 
 export default IREGULAR_ACTIONS;

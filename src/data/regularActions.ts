@@ -1,3 +1,5 @@
+import { action } from '../types/action';
+
 const washEyes = {
   id: "washEyes",
   types: ["щоранку"],
@@ -78,7 +80,7 @@ const walking = {
   startDate: "02.05.2025",
 };
 
-const REGULAR_ACTIONS = [
+const REGULAR_ACTIONS: action[] = [
   washEyes,
   washFullBody,
   vitamidD,

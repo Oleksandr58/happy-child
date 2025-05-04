@@ -10,15 +10,33 @@ import Checkbox from "@mui/material/Checkbox";
 import { getActionsForDates } from "../helpers/calculate";
 import { saveAction } from "../helpers/store";
 import dayjs from "dayjs";
-import START_CALCULATION_DATE from "../data/startCalculationDate";
-import "./App.css";
-import { act } from "react";
+import { START_CALCULATION_DATE, STANDART_DATE_FORMAT } from "../helpers/date";
+import { createIdFromAction } from '../helpers/calculate';
+import { useState, useEffect } from "react";
+import { actionsArrItem } from '../types/action';
 
 export default function AccordionUsage() {
-  const actionsDates = getActionsForDates(
-    START_CALCULATION_DATE,
-    dayjs().add(10, "day").format("DD.MM.YYYY")
-  );
+  const [checkboxMap, setCheckboxMap] = useState<Record<string, boolean>>({});
+  const [actionsDates, setActionsDates] = useState<actionsArrItem[]>();
+
+  useEffect(() => {
+    const actions = getActionsForDates(
+      START_CALCULATION_DATE,
+      dayjs().add(10, "day").format(STANDART_DATE_FORMAT)
+    );
+    const checkboxMapStart = actions.reduce((acc: Record<string, boolean>, act) => {
+      act.actions.forEach((action) => {
+        acc[action.id] = action.isChecked;
+      });
+
+      return acc;
+    }, {})
+
+    setCheckboxMap(checkboxMapStart);
+    if (actions?.length) {
+      setActionsDates(actions);
+    }
+  }, []);
 
   return (
     <Box
@@ -58,37 +76,38 @@ export default function AccordionUsage() {
 
           {actionsDates?.map((actionsDate) => (
             <Accordion
-              key={actionsDate.date}
+              key={actionsDate.date.format(STANDART_DATE_FORMAT)}
               sx={{ width: "100%", backgroundColor: "unset" }}
               defaultExpanded={actionsDate.date.isSame(dayjs(), "day")}
             >
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
-                aria-controls={actionsDate.date}
-                id={actionsDate.date}
+                aria-controls={actionsDate.date.format(STANDART_DATE_FORMAT)}
+                id={actionsDate.date.format(STANDART_DATE_FORMAT)}
               >
                 <Typography component="span" fontWeight="bold" fontSize="18px">
-                  {actionsDate.date.format("DD.MM.YYYY")}
+                  {actionsDate.date.format(STANDART_DATE_FORMAT)}
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <FormGroup>
                   {actionsDate.actions.map((action) => (
                     <FormControlLabel
+                      key={createIdFromAction(actionsDate.date, action)}
                       control={<Checkbox />}
                       label={action.name}
-                      checked={action.isChecked}
-                      onChange={(a) => {
-                        console.log(
-                          "a",
-                          a.target.checked,
-                          `${actionsDate.date.format("DD.MM.YYYY")}-${action.id}`
-                        );
+                      checked={checkboxMap?.[action.id]}
+                      onChange={(e) => {
+                        const isChecked = (e.target as HTMLInputElement).checked;
 
                         saveAction(
-                          `${actionsDate.date.format("DD.MM.YYYY")}-${action.id}`,
-                          a.target.checked
+                          action.id,
+                          isChecked
                         );
+                        setCheckboxMap({
+                          ...checkboxMap,
+                          [action.id]: isChecked,
+                        })
                       }}
                     />
                   ))}

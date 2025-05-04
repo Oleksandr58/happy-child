@@ -1,37 +1,50 @@
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import ACTIONS from "../data/actions";
 import { getIsCheckAction } from "./store";
+import { action, actionView, actionsArrItem } from '../types/action';
+import { STANDART_DATE_FORMAT } from '../helpers/date'
 
-const STANDART_DATE_FORMAT = "DD.MM.YYYY";
 
-const getActionsArrFromOBj = (action, date) => {
-  const arr = [];
+const createIdFromAction = (date: Dayjs, action: actionView | action, index?: number) => {
+  let id = `${date.format(STANDART_DATE_FORMAT)}-${action.id}`;
+
+  if (index !== undefined) {
+    id = `${id}-${index}`;
+  }
+
+  return id;
+};
+
+const getActionsArrFromOBj = (action: action, date: Dayjs): actionView[] => {
+  const arr: actionView[] = [];
 
   if (action.types) {
     for (let index = 0; index < action.types.length; index++) {
+      const id = createIdFromAction(date, action, index);
       const element = action.types[index];
 
       arr.push({
         name: `${action.name} ${element}`,
-        id: `${action.id}-${index}`,
+        id,
         isChecked: getIsCheckAction(
-          `${date.format("DD.MM.YYYY")}-${action.id}-${index}`
+          id
         ),
       });
     }
   } else {
+    const id = createIdFromAction(date, action);
     arr.push({
       name: `${action.name}`,
-      id: `${action.id}`,
-      isChecked: getIsCheckAction(`${date.format("DD.MM.YYYY")}-${action.id}`),
+      id,
+      isChecked: getIsCheckAction(id),
     });
   }
 
   return arr;
 };
 
-const getActionsForDate = (date) => {
-  let actions = [];
+const getActionsForDate = (date: Dayjs) => {
+  let actions: actionView[] = [];
 
   for (let index = 0; index < ACTIONS.length; index++) {
     const element = ACTIONS[index];
@@ -51,7 +64,7 @@ const getActionsForDate = (date) => {
   };
 };
 
-const getActionsForDates = (dateStart, dateEnd) => {
+const getActionsForDates = (dateStart: string, dateEnd: string): actionsArrItem[] => {
   let dateCalculateDayjs = dayjs(dateStart, STANDART_DATE_FORMAT);
   const dateEndDayjs = dayjs(dateEnd, STANDART_DATE_FORMAT);
   const actionsArr = [];
@@ -68,5 +81,5 @@ const getActionsForDates = (dateStart, dateEnd) => {
   return actionsArr;
 };
 
-export { getActionsForDate, getActionsForDates };
+export { getActionsForDate, getActionsForDates, createIdFromAction };
 export default {};
