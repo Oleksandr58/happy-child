@@ -1,4 +1,4 @@
-import { action } from '../types/action';
+import { action } from "../types/action";
 
 const washEyes = {
   id: "washEyes",
@@ -32,12 +32,12 @@ const vitamidK = {
   startDate: "02.05.2025",
 };
 
-const bodyLotion = {
-  id: "bodyLotion",
+const bakteriiaVitamin = {
+  id: "bakteriiaVitamin",
   types: ["щоранку"],
-  name: "Змастити кремом шкіру (руки, ноги, пузіко)",
+  name: "Дати вітамінки з бактеріями для пузіка",
   period: 1,
-  startDate: "02.05.2025",
+  startDate: "08.05.2025",
 };
 
 const training = {
@@ -85,7 +85,7 @@ const REGULAR_ACTIONS: action[] = [
   washFullBody,
   vitamidD,
   vitamidK,
-  bodyLotion,
+  bakteriiaVitamin,
   training,
   swapBelly,
   manageBelly,
