@@ -87,8 +87,10 @@ export default function AccordionUsage() {
             margin="16px"
             textAlign="center"
           >
-            Дмитрико-день (
-            {`${monthCount} місяців ${dayCount} день ${hoursCount} годин`})
+            Дмитрико-день{" "}
+            <div>
+              ({`${monthCount} місяців ${dayCount} день ${hoursCount} годин`})
+            </div>
           </Typography>
 
           {actionsDates?.map((actionsDate) => (
