@@ -11,26 +11,38 @@ import { getActionsForDates } from "../helpers/calculate";
 import { saveAction } from "../helpers/store";
 import dayjs from "dayjs";
 import { START_CALCULATION_DATE, STANDART_DATE_FORMAT } from "../helpers/date";
-import { createIdFromAction } from '../helpers/calculate';
+import { createIdFromAction } from "../helpers/calculate";
 import { useState, useEffect } from "react";
-import { actionsArrItem } from '../types/action';
+import { actionsArrItem } from "../types/action";
 
 export default function AccordionUsage() {
   const [checkboxMap, setCheckboxMap] = useState<Record<string, boolean>>({});
   const [actionsDates, setActionsDates] = useState<actionsArrItem[]>();
+
+  const dayCount = dayjs().diff(
+    dayjs("10.04.2025 12-35", "DD.MM.YYYY HH-mm"),
+    "days"
+  );
+  const hoursCount = dayjs().diff(
+    dayjs(`${dayjs().format("DD.MM.YYYY")} 12-35`, "DD.MM.YYYY HH-mm"),
+    "hours"
+  );
 
   useEffect(() => {
     const actions = getActionsForDates(
       START_CALCULATION_DATE,
       dayjs().add(10, "day").format(STANDART_DATE_FORMAT)
     );
-    const checkboxMapStart = actions.reduce((acc: Record<string, boolean>, act) => {
-      act.actions.forEach((action) => {
-        acc[action.id] = action.isChecked;
-      });
+    const checkboxMapStart = actions.reduce(
+      (acc: Record<string, boolean>, act) => {
+        act.actions.forEach((action) => {
+          acc[action.id] = action.isChecked;
+        });
 
-      return acc;
-    }, {})
+        return acc;
+      },
+      {}
+    );
 
     setCheckboxMap(checkboxMapStart);
     if (actions?.length) {
@@ -71,7 +83,7 @@ export default function AccordionUsage() {
             margin="16px"
             textAlign="center"
           >
-            Дмитрико-день
+            Дмитрико-день ({`${dayCount} день ${hoursCount} годин`})
           </Typography>
 
           {actionsDates?.map((actionsDate) => (
@@ -98,16 +110,14 @@ export default function AccordionUsage() {
                       label={action.name}
                       checked={checkboxMap?.[action.id]}
                       onChange={(e) => {
-                        const isChecked = (e.target as HTMLInputElement).checked;
+                        const isChecked = (e.target as HTMLInputElement)
+                          .checked;
 
-                        saveAction(
-                          action.id,
-                          isChecked
-                        );
+                        saveAction(action.id, isChecked);
                         setCheckboxMap({
                           ...checkboxMap,
                           [action.id]: isChecked,
-                        })
+                        });
                       }}
                     />
                   ))}
