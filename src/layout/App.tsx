@@ -19,8 +19,12 @@ export default function AccordionUsage() {
   const [checkboxMap, setCheckboxMap] = useState<Record<string, boolean>>({});
   const [actionsDates, setActionsDates] = useState<actionsArrItem[]>();
 
-  const dayCount = dayjs().diff(
+  const monthCount = dayjs().diff(
     dayjs("10.04.2025 12-35", "DD.MM.YYYY HH-mm"),
+    "month"
+  );
+  const dayCount = dayjs().diff(
+    dayjs(`'10${dayjs().format(".MM.YYYY")} 12-35`, "DD.MM.YYYY HH-mm"),
     "days"
   );
   const hoursCount = dayjs().diff(
@@ -83,7 +87,8 @@ export default function AccordionUsage() {
             margin="16px"
             textAlign="center"
           >
-            Дмитрико-день ({`${dayCount} день ${hoursCount} годин`})
+            Дмитрико-день (
+            {`${monthCount} місяців ${dayCount} день ${hoursCount} годин`})
           </Typography>
 
           {actionsDates?.map((actionsDate) => (
