@@ -1,3 +1,4 @@
+import Button from "@mui/material/Button";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -12,12 +13,13 @@ import { saveAction } from "../helpers/store";
 import dayjs from "dayjs";
 import { START_CALCULATION_DATE, STANDART_DATE_FORMAT } from "../helpers/date";
 import { createIdFromAction } from "../helpers/calculate";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { actionsArrItem } from "../types/action";
 
 export default function AccordionUsage() {
   const [checkboxMap, setCheckboxMap] = useState<Record<string, boolean>>({});
   const [actionsDates, setActionsDates] = useState<actionsArrItem[]>();
+  const [showAllDates, setShowAllDates] = useState(false);
 
   const monthCount = dayjs().diff(
     dayjs("10.04.2025 12-35", "DD.MM.YYYY HH-mm"),
@@ -27,14 +29,20 @@ export default function AccordionUsage() {
     dayjs(`'10${dayjs().format(".MM.YYYY")} 12-35`, "DD.MM.YYYY HH-mm"),
     "days"
   );
-  const hoursCount = dayjs().diff(
-    dayjs(`${dayjs().format("DD.MM.YYYY")} 12-35`, "DD.MM.YYYY HH-mm"),
-    "hours"
+  const hoursCount = Math.abs(
+    dayjs().diff(
+      dayjs(`${dayjs().format("DD.MM.YYYY")} 12-35`, "DD.MM.YYYY HH-mm"),
+      "hours"
+    )
   );
 
-  useEffect(() => {
+  const getActions = useCallback(() => {
     const actions = getActionsForDates(
-      START_CALCULATION_DATE,
+      showAllDates
+        ? dayjs(START_CALCULATION_DATE, STANDART_DATE_FORMAT).format(
+            STANDART_DATE_FORMAT
+          )
+        : dayjs().add(-1, "day").format(STANDART_DATE_FORMAT),
       dayjs().add(10, "day").format(STANDART_DATE_FORMAT)
     );
     const checkboxMapStart = actions.reduce(
@@ -49,10 +57,15 @@ export default function AccordionUsage() {
     );
 
     setCheckboxMap(checkboxMapStart);
+    setShowAllDates(!showAllDates);
     if (actions?.length) {
       setActionsDates(actions);
     }
-  }, []);
+  }, [showAllDates]);
+
+  useEffect(() => {
+    getActions();
+  }, [getActions]);
 
   return (
     <Box
@@ -92,6 +105,15 @@ export default function AccordionUsage() {
               ({`${monthCount} місяців ${dayCount} день ${hoursCount} годин`})
             </div>
           </Typography>
+
+          <Button
+            onClick={() => getActions()}
+            sx={{ m: 1 }}
+            variant="contained"
+            size="small"
+          >
+            {showAllDates ? "Показати" : "Сховати"} всі дати
+          </Button>
 
           {actionsDates?.map((actionsDate) => (
             <Accordion
