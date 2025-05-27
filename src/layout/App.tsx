@@ -65,7 +65,7 @@ export default function AccordionUsage() {
 
   useEffect(() => {
     getActions();
-  }, [getActions]);
+  }, []);
 
   return (
     <Box

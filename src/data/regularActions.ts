@@ -13,7 +13,7 @@ const washFullBody = {
   types: ["раз в 2 дні"],
   name: "Купання",
   period: 2,
-  startDate: "02.05.2025",
+  startDate: "27.05.2025",
 };
 
 const vitamidD = {
