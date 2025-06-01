@@ -11,7 +11,11 @@ import Checkbox from "@mui/material/Checkbox";
 import { getActionsForDates } from "../helpers/calculate";
 import { saveAction } from "../helpers/store";
 import dayjs from "dayjs";
-import { START_CALCULATION_DATE, STANDART_DATE_FORMAT } from "../helpers/date";
+import {
+  START_CALCULATION_DATE,
+  STANDART_DATE_FORMAT,
+  resultBirthDate,
+} from "../helpers/date";
 import { createIdFromAction } from "../helpers/calculate";
 import { useState, useEffect, useCallback } from "react";
 import { actionsArrItem } from "../types/action";
@@ -20,21 +24,6 @@ export default function AccordionUsage() {
   const [checkboxMap, setCheckboxMap] = useState<Record<string, boolean>>({});
   const [actionsDates, setActionsDates] = useState<actionsArrItem[]>();
   const [showAllDates, setShowAllDates] = useState(false);
-
-  const monthCount = dayjs().diff(
-    dayjs("10.04.2025 12-35", "DD.MM.YYYY HH-mm"),
-    "month"
-  );
-  const dayCount = dayjs().diff(
-    dayjs(`'10${dayjs().format(".MM.YYYY")} 12-35`, "DD.MM.YYYY HH-mm"),
-    "days"
-  );
-  const hoursCount = Math.abs(
-    dayjs().diff(
-      dayjs(`${dayjs().format("DD.MM.YYYY")} 12-35`, "DD.MM.YYYY HH-mm"),
-      "hours"
-    )
-  );
 
   const getActions = useCallback(() => {
     const actions = getActionsForDates(
@@ -100,10 +89,7 @@ export default function AccordionUsage() {
             margin="16px"
             textAlign="center"
           >
-            Дмитрико-день{" "}
-            <div>
-              ({`${monthCount} місяців ${dayCount} день ${hoursCount} годин`})
-            </div>
+            Дмитрико-день <div>({resultBirthDate})</div>
           </Typography>
 
           <Button
