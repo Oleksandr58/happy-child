@@ -56,13 +56,13 @@ const swapBelly = {
   startDate: "02.05.2025",
 };
 
-const manageBelly = {
-  id: "manageBelly",
-  types: ["щоранку", "щовечора"],
-  name: "Обробити пупчик",
-  period: 1,
-  startDate: "02.05.2025",
-};
+// const manageBelly = {
+//   id: "manageBelly",
+//   types: ["щоранку", "щовечора"],
+//   name: "Обробити пупчик",
+//   period: 1,
+//   startDate: "02.05.2025",
+// };
 
 const cleanNose = {
   id: "cleanNose",
@@ -88,7 +88,7 @@ const REGULAR_ACTIONS: action[] = [
   bakteriiaVitamin,
   training,
   swapBelly,
-  manageBelly,
+  // manageBelly,
   cleanNose,
   walking,
 ];
