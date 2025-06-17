@@ -85,7 +85,7 @@ const REGULAR_ACTIONS: action[] = [
   washFullBody,
   vitamidD,
   vitamidK,
-  bakteriiaVitamin,
+  // bakteriiaVitamin,
   training,
   swapBelly,
   // manageBelly,
