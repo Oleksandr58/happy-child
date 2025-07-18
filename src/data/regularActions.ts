@@ -10,9 +10,9 @@ const washEyes = {
 
 const washFullBody = {
   id: "washFullBody",
-  types: ["раз в 2 дні"],
+  types: ["щодня"],
   name: "Купання",
-  period: 2,
+  period: 1,
   startDate: "27.05.2025",
 };
 
@@ -84,7 +84,7 @@ const REGULAR_ACTIONS: action[] = [
   washEyes,
   washFullBody,
   vitamidD,
-  vitamidK,
+  // vitamidK,
   // bakteriiaVitamin,
   training,
   swapBelly,
